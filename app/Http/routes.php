@@ -15,6 +15,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/exa', function () {
-  echo "Hola mundo";
+Route::resource('register','RegisterController');
+Route::resource('login','LoginController');
+Route::post('login/normal','LoginController@normalLogin');
+Route::post('login/facebook/{user}/{email}/{fb_id}','LoginController@facebook');
+Route::resource('restaurant','RestaurantController');
+
+Route::group(['middleware' => 'auth'], function () {
+
 });
+?>
