@@ -48,27 +48,26 @@ class LoginController extends Controller
     /*
      *
      */
-    public function facebookLogin(Request $request){
+    public function facebookLogin($user,$email,$fb_id){
 
-        //get all the data
-        $data = $request->all();
         //validate if the user exists with that fb_id
-        $user_validate = User::where('facebook_id',$data['fb_id']);
+        $user_validate = User::where('facebook_id',$fb_id)->first();
 
         //if not register already
         if(is_null($user_validate)){
             //evaluate the email
-            $unique_email = User::where('email',$data['email']);
+            $unique_email = User::where('email',$email)->pluck('email');
             if(is_null($unique_email)){
                 //token API access
                 $uuid = (string)Uuid::uuid4();
                 //create the new user
                 $user = new User([
-                    'name' => $data['user'],
-                    'email' => $data['email'],
+                    'name' => $user,
+                    'email' => $email,
                     'status' => 1,
-                    'password' => bcrypt($data['fb_id']),
+                    'password' => bcrypt($fb_id),
                     'token' => $uuid,
+                    'facebook_id' => $fb_id,
                 ]);
                 $user->save();
                 //return the user token
