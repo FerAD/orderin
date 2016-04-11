@@ -24,7 +24,7 @@ class LoginController extends Controller
         //rules for the form data
         $rules = array(
             'email' => 'required|email|max:255',
-            'password' => 'required|min:6',
+            'password' => 'required|min:6|max:60',
         );
 
         //validator

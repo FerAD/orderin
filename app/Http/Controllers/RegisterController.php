@@ -43,7 +43,7 @@ class RegisterController extends Controller
         $rules = array(
             'name' => 'required|max:150',
             'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6',
+            'password' => 'required|min:6|max:60',
         );
 
         $data = $request->all();
