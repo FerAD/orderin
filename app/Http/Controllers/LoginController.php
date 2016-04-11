@@ -6,7 +6,9 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Ramsey\Uuid\Uuid;
 
 
 class LoginController extends Controller
@@ -35,7 +37,8 @@ class LoginController extends Controller
         }else {
 
             if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
-                $user = User::where('email', $data['email'])->first();
+                $user = User::where('email','=',$data['email'])->first();
+                DB::table('users')->where('idUser',$user->idUser)->update(array('pushDisp'=>$data['pushDisp']));
                 //return the user token
                 return response()->json($user->token);
             } else {
@@ -48,7 +51,7 @@ class LoginController extends Controller
     /*
      *
      */
-    public function facebookLogin($user,$email,$fb_id){
+    public function facebookLogin($user,$email,$fb_id,$pushDisp){
 
         //validate if the user exists with that fb_id
         $user_validate = User::where('facebook_id',$fb_id)->first();
@@ -56,7 +59,7 @@ class LoginController extends Controller
         //if not register already
         if(is_null($user_validate)){
             //evaluate the email
-            $unique_email = User::where('email',$email)->pluck('email');
+            $unique_email = User::where('email',$email)->first();
             if(is_null($unique_email)){
                 //token API access
                 $uuid = (string)Uuid::uuid4();
@@ -68,6 +71,7 @@ class LoginController extends Controller
                     'password' => bcrypt($fb_id),
                     'token' => $uuid,
                     'facebook_id' => $fb_id,
+                    'pushDisp' => $pushDisp
                 ]);
                 $user->save();
                 //return the user token
@@ -78,6 +82,7 @@ class LoginController extends Controller
             }
         //if the user is already registed
         }else{
+            DB::table('users')->where('idUser',$user_validate->idUser)->update(array('pushDisp'=>$pushDisp));
             //return user token
             return response()->json(['token'=>$user_validate->token]);
         }

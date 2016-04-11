@@ -65,6 +65,7 @@ class RegisterController extends Controller
                 'status' => 1,
                 'password' => bcrypt($data['password']),
                 'token' => $uuid,
+                'pushDisp' => $data['pushDisp'],
             ]);
             $user->save();
 

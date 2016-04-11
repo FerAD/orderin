@@ -18,7 +18,7 @@ Route::get('/', function () {
 Route::resource('register','RegisterController');
 Route::resource('login','LoginController');
 Route::post('login/normal','LoginController@normalLogin');
-Route::post('login/facebook/{user}/{email}/{fb_id}','LoginController@facebookLogin');
+Route::post('login/facebook/{user}/{email}/{fb_id}/{pushDisp}','LoginController@facebookLogin');
 Route::resource('restaurant','RestaurantController');
 Route::post('restaurant/getCloser/{token}','RestaurantController@listingCloser');
 
