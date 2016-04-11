@@ -12,6 +12,6 @@ class VerifyCsrfToken extends BaseVerifier
      * @var array
      */
     protected $except = [
-        'register','login','login/normal','login/facebook/*'
+        'register','login','login/normal','login/facebook/*','restaurant/getCloser/*'
     ];
 }
