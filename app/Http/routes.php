@@ -21,5 +21,8 @@ Route::post('login/normal','LoginController@normalLogin');
 Route::post('login/facebook/{user}/{email}/{fb_id}/{pushDisp}','LoginController@facebookLogin');
 Route::resource('restaurant','RestaurantController');
 Route::post('restaurant/getCloser/{token}','RestaurantController@listingCloser');
+Route::resource('menu','MenuController');
+Route::post('menu/categories/{token}/{idBranch}','MenuController@getCategories');
+Route::post('menu/categories/dishes/{token}/{idBranch}/{idCategory}','MenuController@getDishes');
 
 ?>
