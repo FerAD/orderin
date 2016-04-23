@@ -28,6 +28,7 @@ class RestaurantController extends Controller
             return response()->json(['error'=>'Error con el token del usuario']);
         }
     }
+    
     /**
      * Display a listing of the resource.
      *

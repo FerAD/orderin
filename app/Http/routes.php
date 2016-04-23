@@ -24,5 +24,6 @@ Route::post('restaurant/getCloser/{token}','RestaurantController@listingCloser')
 Route::resource('menu','MenuController');
 Route::post('menu/categories/{token}/{idBranch}','MenuController@getCategories');
 Route::post('menu/categories/dishes/{token}/{idBranch}/{idCategory}','MenuController@getDishes');
-
+Route::post('create/order/{idUser}/{idBranch}/{userToken}','OrderController@createOrder');
+Route::get('{idUser}/orders/{userToken}','OrderController@getMyOrders');
 ?>
