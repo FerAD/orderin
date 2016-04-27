@@ -88,7 +88,15 @@ class OrderController extends Controller
             return $orders;
         }
     }
-    
+
+    public function orderReady($orderToken){
+        //get the user id
+        $userId = Order::where('token',$orderToken)->pluck('idUser');
+        //get the data of the user
+        $user = User::where('idUser',$userId)->first();
+
+
+    }
     /**
      * Display a listing of the resource.
      *

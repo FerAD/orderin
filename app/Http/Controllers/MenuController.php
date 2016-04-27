@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Dish_cat;
+use App\Dish_topp;
 use App\Dishes;
 use App\Men_cat;
 use App\Menu;
@@ -42,14 +43,26 @@ class MenuController extends Controller
             //return an error
             return response()->json(['error'=>'Error el token no se encuentra']);
         }else{
-            $dishes = Dish_cat::where('idCategory',$idCategory)->
+
+            $data['dishes'] = Dish_cat::where('idCategory',$idCategory)->
                     leftjoin('dishes','dishes.idDish','=','dish_cat.idDish')->
                     where('dishes.idBranch',$idBranch)->
-                    select('dishes.name','dishes.price','dishes.status','dishes.timeCook')->get();
-            
-            //$dish = Dishes::where('idBranch',$idBranch)->
-                    
-            return $dishes;
+                    select('dishes.name','dishes.price','dishes.status','dishes.timeCook','dishes.idDish')->
+                    get()->toArray();
+
+            $data['toppings'] = array();
+            foreach($data['dishes'] as $dish){
+                $topping = Dish_topp::where('dish_topp.idDish','=',$dish['idDish'])->
+                                    leftjoin('toppings','toppings.idTopping','=','dish_topp.idTopping')->
+                                    select('toppings.name','toppings.price','toppings.idTopping','dish_topp.idDish')->
+                                    get()->toArray();
+                array_push($data['toppings'],$topping);
+            }
+
+
+
+            return $data;
+
         }
     }
     /**
